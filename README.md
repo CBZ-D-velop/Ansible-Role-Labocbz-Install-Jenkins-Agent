@@ -101,7 +101,18 @@ Some vars a required to run this role:
 
 ```YAML
 ---
-your defaults vars here
+install_jenkins_agent_user: "jenkins"
+install_jenkins_agent_group: "jenkins"
+install_jenkins_agent_password: "PASSWORDDDDD"
+
+install_jenkins_agent_name: "Jenkins-Agent-1"
+install_jenkins_agent_home: "/home/{{ install_jenkins_agent_user }}/{{ install_jenkins_agent_name | lower }}"
+install_jenkins_agent_master_remote: "https://jenkins.domain.tld"
+install_jenkins_agent_jar: "{{ install_jenkins_agent_master_remote }}/jnlpJars/agent.jar"
+install_jenkins_agent_secret: "XXXXXXXX"
+
+install_jenkins_agent_log_path: "/var/log/jenkins-agent"
+
 ```
 
 The best way is to modify these vars by copy the ./default/main.yml file into the ./vars and edit with your personnals requirements.
@@ -113,7 +124,18 @@ In order to surchage vars, you have multiples possibilities but for mains cases 
 ```YAML
 # From inventory
 ---
-all vars from to put/from your inventory
+inv_install_jenkins_agent_user: "jenkins"
+inv_install_jenkins_agent_group: "jenkins"
+inv_install_jenkins_agent_password: "PASSWORDDDDD"
+
+inv_install_jenkins_agent_name: "TEST-AGENT-ANSIBLE"
+inv_install_jenkins_agent_home: "/home/{{ inv_install_jenkins_agent_user }}/{{ inv_install_jenkins_agent_name | lower }}"
+inv_install_jenkins_agent_master_remote: "https://jenkins.domain.tld"
+inv_install_jenkins_agent_jar: "{{ inv_install_jenkins_agent_master_remote }}/jnlpJars/agent.jar"
+inv_install_jenkins_agent_secret: "XXXXXXXX"
+
+inv_install_jenkins_agent_log_path: "/var/log/jenkins-agent"
+
 ```
 
 ```YAML
@@ -127,8 +149,21 @@ all vars from to put/from AWX / Tower
 To run this role, you can copy the molecule/default/converge.yml playbook and add it into your playbook:
 
 ```YAML
----
-your converge.yml file here
+    - name: "Include labocbz.install_jenkins_agent"
+      tags:
+        - "labocbz.install_jenkins_agent"
+      vars:
+        install_jenkins_agent_user: "{{ inv_install_jenkins_agent_user }}"
+        install_jenkins_agent_group: "{{ inv_install_jenkins_agent_group }}"
+        install_jenkins_agent_name: "{{ inv_install_jenkins_agent_name }}"
+        install_jenkins_agent_password: "{{ inv_install_jenkins_agent_password }}"
+        install_jenkins_agent_home: "{{ inv_install_jenkins_agent_home }}"
+        install_jenkins_agent_master_remote: "{{ inv_install_jenkins_agent_master_remote }}"
+        install_jenkins_agent_jar: "{{ inv_install_jenkins_agent_jar }}"
+        install_jenkins_agent_secret: "{{ inv_install_jenkins_agent_secret }}"
+        install_jenkins_agent_log_path: "{{ inv_install_jenkins_agent_log_path }}"
+      ansible.builtin.include_role:
+        name: "labocbz.install_jenkins_agent"
 ```
 
 ## Architectural Decisions Records

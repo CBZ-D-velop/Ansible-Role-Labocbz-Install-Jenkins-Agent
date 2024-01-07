@@ -1,1 +1,71 @@
 ---
+- name: "Install Jenkins Agent"
+  notify:
+    - "Enable and start Jenkins Agent"
+    - "Restart Jenkins Agent"
+  block:
+    - name: "Edit / Create the Jenkins user"
+      ansible.builtin.user:
+        name: "{{ install_jenkins_agent_user }}"
+        groups: "docker,{{ install_jenkins_agent_group }}"
+        state: present
+        append: true
+        password: ""
+        uid: 1000
+
+    - name: "Check if folder home exist"
+      register: folder_check
+      ansible.builtin.stat:
+        path: "{{ install_jenkins_agent_home }}"
+
+    - name: "Create home path"
+      when: not folder_check.stat.exists
+      ansible.builtin.file:
+        path: "{{ install_jenkins_agent_home }}"
+        state: directory
+        recurse: yes
+        mode: "0700"
+        group: "{{ install_jenkins_agent_group }}"
+        owner: "{{ install_jenkins_agent_user }}"
+
+    - name: "Check if log folder exist"
+      register: folder_check
+      ansible.builtin.stat:
+        path: "{{ install_jenkins_agent_log_path }}"
+
+    - name: "Create home path"
+      when: not folder_check.stat.exists
+      ansible.builtin.file:
+        path: "{{ install_jenkins_agent_log_path }}"
+        state: directory
+        recurse: yes
+        mode: "0700"
+        group: "{{ install_jenkins_agent_group }}"
+        owner: "{{ install_jenkins_agent_user }}"
+
+    #- name: "Download agent.jar from Jenkins master remote"
+    #  ansible.builtin.uri:
+    #    url: "{{ install_jenkins_agent_jar }}"
+    #    dest: "{{ install_jenkins_agent_home }}/agent.jar"
+    #    mode: "0700"
+    #    group: "{{ install_jenkins_agent_group }}"
+    #    owner: "{{ install_jenkins_agent_user }}"
+    #    validate_certs: false
+
+    - name: "Import agent.jar from Local role"
+      ansible.builtin.copy:
+        src: "files/agent.jar"
+        dest: "{{ install_jenkins_agent_home }}/agent.jar"
+        mode: "0700"
+        group: "{{ install_jenkins_agent_group }}"
+        owner: "{{ install_jenkins_agent_user }}"
+
+- name: "Import Jenkins Agent service file"
+  notify: "Enable and start Jenkins Agent"
+  ansible.builtin.template:
+    src: "templates/jenkins_agent.service.j2"
+    dest: "/etc/systemd/system/jenkins_agent.service"
+    mode: "0600"
+    group: "root"
+    owner: "root"
+    lstrip_blocks: yes

@@ -1,0 +1,26 @@
+##############################
+#                            #
+# Ansible / Tower managed on #
+#                            #
+##############################
+
+[Unit]
+Description=Jenkins Agent: {{ install_jenkins_agent_name }}
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User={{ install_jenkins_agent_user }}
+Group={{ install_jenkins_agent_group }}
+Type=simple
+Restart=always
+WorkingDirectory={{ install_jenkins_agent_home }}
+ExecStart=java -jar {{ install_jenkins_agent_home }}/agent.jar \
+    -url "{{ install_jenkins_agent_master_remote }}/" \
+    -secret "{{ install_jenkins_agent_secret }}" \
+    -name "{{ install_jenkins_agent_name }}" \
+    -workDir "{{ install_jenkins_agent_home }}" \
+    > {{ install_jenkins_agent_log_path }}/agent.log 2>&1
+
+[Install]
+WantedBy=multi-user.target

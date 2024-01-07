@@ -1,1 +1,11 @@
 ---
+install_jenkins_agent_user: "jenkins"
+install_jenkins_agent_group: "jenkins"
+install_jenkins_agent_password: "PASSWORDDDDD"
+install_jenkins_agent_name: "Jenkins-Agent-1"
+install_jenkins_agent_home: "/home/{{ install_jenkins_agent_user }}/{{ install_jenkins_agent_name | lower }}"
+install_jenkins_agent_master_remote: "https://jenkins.domain.tld"
+install_jenkins_agent_jar: "{{ install_jenkins_agent_master_remote }}/jnlpJars/agent.jar"
+install_jenkins_agent_secret: "XXXXXXXX"
+
+install_jenkins_agent_log_path: "/var/log/jenkins-agent"

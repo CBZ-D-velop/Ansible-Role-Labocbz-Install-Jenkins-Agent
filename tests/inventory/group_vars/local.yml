@@ -1,1 +1,6 @@
 ---
+inv_prepare_host_system_users:
+  - login: "jenkins"
+    group: "jenkins"
+  - login: "jenkins"
+    group: "docker"

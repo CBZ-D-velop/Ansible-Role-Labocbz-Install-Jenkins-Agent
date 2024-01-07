@@ -12,5 +12,15 @@
     - name: "Include labocbz.install_jenkins_agent"
       tags:
         - "labocbz.install_jenkins_agent"
+      vars:
+        install_jenkins_agent_user: "{{ inv_install_jenkins_agent_user }}"
+        install_jenkins_agent_group: "{{ inv_install_jenkins_agent_group }}"
+        install_jenkins_agent_password: "{{ inv_install_jenkins_agent_password }}"
+        install_jenkins_agent_name: "{{ inv_install_jenkins_agent_name }}"
+        install_jenkins_agent_home: "{{ inv_install_jenkins_agent_home }}"
+        install_jenkins_agent_master_remote: "{{ inv_install_jenkins_agent_master_remote }}"
+        install_jenkins_agent_jar: "{{ inv_install_jenkins_agent_jar }}"
+        install_jenkins_agent_secret: "{{ inv_install_jenkins_agent_secret }}"
+        install_jenkins_agent_log_path: "{{ inv_install_jenkins_agent_log_path }}"
       ansible.builtin.include_role:
         name: "labocbz.install_jenkins_agent"

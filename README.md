@@ -18,6 +18,12 @@
 
 An Ansible role to install and configure a Jenkins Agent on your host.
 
+This Ansible role facilitates the installation of a Jenkins agent on the host machine. The role takes care of establishing the necessary file architecture for executing jobs and pipelines. Additionally, it supports CI workflows focused on Docker by adding the user to the Docker group.
+
+The role provides the flexibility to explicitly define the user that the agent will use (username/password). The agent is started as a service, and security options, such as basic authentication, CA certificates, etc., can be configured. It is essential to have Java installed, and Docker if needed for Docker-centric CI workflows.
+
+In summary, this Ansible role simplifies the process of installing a Jenkins agent on a host machine, addressing file structure requirements, supporting Docker-oriented CI workflows, and offering customizable user and security configurations.
+
 ## Folder structure
 
 By default Ansible will look in each directory within a role for a main.yml file for relevant content (also man.yml and main):
@@ -104,14 +110,19 @@ Some vars a required to run this role:
 install_jenkins_agent_user: "jenkins"
 install_jenkins_agent_group: "jenkins"
 install_jenkins_agent_password: "PASSWORDDDDD"
-
 install_jenkins_agent_name: "Jenkins-Agent-1"
 install_jenkins_agent_home: "/home/{{ install_jenkins_agent_user }}/{{ install_jenkins_agent_name | lower }}"
 install_jenkins_agent_master_remote: "https://jenkins.domain.tld"
 install_jenkins_agent_jar: "{{ install_jenkins_agent_master_remote }}/jnlpJars/agent.jar"
 install_jenkins_agent_secret: "XXXXXXXX"
+install_jenkins_agent_log_path: "/var/log/jenkins-agent/{{ install_jenkins_agent_name }}"
 
-install_jenkins_agent_log_path: "/var/log/jenkins-agent"
+install_jenkins_agent_docker_based: true
+install_jenkins_agent_ca: "{{ install_jenkins_agent_home }}/ssl/myCa.pem"
+install_jenkins_agent_https_check: false
+install_jenkins_agent_basic_auth_login: "myuser"
+install_jenkins_agent_basic_auth_password: "password"
+install_jenkins_agent_basic_auth: "{{ install_jenkins_agent_basic_auth_login }}:{{ install_jenkins_agent_basic_auth_password }}"
 
 ```
 
@@ -127,21 +138,26 @@ In order to surchage vars, you have multiples possibilities but for mains cases 
 inv_install_jenkins_agent_user: "jenkins"
 inv_install_jenkins_agent_group: "jenkins"
 inv_install_jenkins_agent_password: "PASSWORDDDDD"
-
-inv_install_jenkins_agent_name: "TEST-AGENT-ANSIBLE"
+inv_install_jenkins_agent_name: "Jenkins-Agent-1"
 inv_install_jenkins_agent_home: "/home/{{ inv_install_jenkins_agent_user }}/{{ inv_install_jenkins_agent_name | lower }}"
 inv_install_jenkins_agent_master_remote: "https://jenkins.domain.tld"
 inv_install_jenkins_agent_jar: "{{ inv_install_jenkins_agent_master_remote }}/jnlpJars/agent.jar"
 inv_install_jenkins_agent_secret: "XXXXXXXX"
+inv_install_jenkins_agent_log_path: "/var/log/jenkins-agent/{{ inv_install_jenkins_agent_name }}"
 
-inv_install_jenkins_agent_log_path: "/var/log/jenkins-agent"
+inv_install_jenkins_agent_docker_based: true
+inv_install_jenkins_agent_ca: "{{ inv_install_jenkins_agent_home }}/ssl/myCa.pem"
+inv_install_jenkins_agent_https_check: false
+inv_install_jenkins_agent_basic_auth_login: "myuser"
+inv_install_jenkins_agent_basic_auth_password: "password"
+inv_install_jenkins_agent_basic_auth: "{{ inv_install_jenkins_agent_basic_auth_login }}:{{ inv_install_jenkins_agent_basic_auth_password }}"
 
 ```
 
 ```YAML
 # From AWX / Tower
 ---
-all vars from to put/from AWX / Tower
+
 ```
 
 ### Run
@@ -149,21 +165,27 @@ all vars from to put/from AWX / Tower
 To run this role, you can copy the molecule/default/converge.yml playbook and add it into your playbook:
 
 ```YAML
-    - name: "Include labocbz.install_jenkins_agent"
-      tags:
-        - "labocbz.install_jenkins_agent"
-      vars:
-        install_jenkins_agent_user: "{{ inv_install_jenkins_agent_user }}"
-        install_jenkins_agent_group: "{{ inv_install_jenkins_agent_group }}"
-        install_jenkins_agent_name: "{{ inv_install_jenkins_agent_name }}"
-        install_jenkins_agent_password: "{{ inv_install_jenkins_agent_password }}"
-        install_jenkins_agent_home: "{{ inv_install_jenkins_agent_home }}"
-        install_jenkins_agent_master_remote: "{{ inv_install_jenkins_agent_master_remote }}"
-        install_jenkins_agent_jar: "{{ inv_install_jenkins_agent_jar }}"
-        install_jenkins_agent_secret: "{{ inv_install_jenkins_agent_secret }}"
-        install_jenkins_agent_log_path: "{{ inv_install_jenkins_agent_log_path }}"
-      ansible.builtin.include_role:
-        name: "labocbz.install_jenkins_agent"
+- name: "Include labocbz.install_jenkins_agent"
+  tags:
+    - "labocbz.install_jenkins_agent"
+  vars:
+    install_jenkins_agent_user: "{{ inv_install_jenkins_agent_user }}"
+    install_jenkins_agent_group: "{{ inv_install_jenkins_agent_group }}"
+    install_jenkins_agent_password: "{{ inv_install_jenkins_agent_password }}"
+    install_jenkins_agent_docker_based: "{{ inv_install_jenkins_agent_docker_based }}"
+    install_jenkins_agent_name: "{{ inv_install_jenkins_agent_name }}"
+    install_jenkins_agent_home: "{{ inv_install_jenkins_agent_home }}"
+    install_jenkins_agent_master_remote: "{{ inv_install_jenkins_agent_master_remote }}"
+    install_jenkins_agent_jar: "{{ inv_install_jenkins_agent_jar }}"
+    install_jenkins_agent_secret: "{{ inv_install_jenkins_agent_secret }}"
+    install_jenkins_agent_log_path: "{{ inv_install_jenkins_agent_log_path }}"
+    install_jenkins_agent_ca: "{{ inv_install_jenkins_agent_ca }}"
+    install_jenkins_agent_https_check: "{{ inv_install_jenkins_agent_https_check }}"
+    install_jenkins_agent_basic_auth_login: "{{ inv_install_jenkins_agent_basic_auth_login }}"
+    install_jenkins_agent_basic_auth_password: "{{ inv_install_jenkins_agent_basic_auth_password }}"
+    install_jenkins_agent_basic_auth: "{{ inv_install_jenkins_agent_basic_auth }}"
+  ansible.builtin.include_role:
+    name: "labocbz.install_jenkins_agent"
 ```
 
 ## Architectural Decisions Records
@@ -173,6 +195,16 @@ Here you can put your change to keep a trace of your work and decisions.
 ### 2024-01-02: First Init
 
 * First init of this role with the bootstrap_role playbook by Lord Robin Crombez
+
+### 2024-01-08: Agent depployed, minimal
+
+* Role can now deploy agent
+* Role handle the creation of the group and the user
+* Role deploy the agent.jar from ./files (403 during tests ...)
+* Role create a service file, so agent is started as service
+* You can define custom log path
+* You can use self signed certs and/or define a pem CA file
+* Role tested on develop / validation env, need second run from scrath with newest params
 
 ## Authors
 

@@ -23,7 +23,7 @@ ExecStart=&1<2 < java -jar {{ install_jenkins_agent_home }}/agent.jar \
 {% if install_jenkins_agent_ca | default(false) %}
     -cert {{ install_jenkins_agent_ca }} \
 {% endif %}
-    -noCertificateCheck {{ install_jenkins_agent_https_check | default(false)}} \
+    -noCertificateCheck {{ not (install_jenkins_agent_https_check | default(false)) }} \
 {% if install_jenkins_agent_basic_auth | default(false) %}
     -credentials {{ install_jenkins_agent_basic_auth }} \
 {% endif %}

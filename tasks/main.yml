@@ -10,7 +10,7 @@
         groups: "docker,{{ install_jenkins_agent_group }}"
         state: present
         append: true
-        password: ""
+        password: "{{ install_jenkins_agent_password }}"
         uid: 1000
 
     - name: "Check if folder home exist"

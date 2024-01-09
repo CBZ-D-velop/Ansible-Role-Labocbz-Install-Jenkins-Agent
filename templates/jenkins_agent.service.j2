@@ -15,12 +15,19 @@ Group={{ install_jenkins_agent_group }}
 Type=simple
 Restart=always
 WorkingDirectory={{ install_jenkins_agent_home }}
-ExecStart=java -jar {{ install_jenkins_agent_home }}/agent.jar \
+ExecStart=&1<2 < java -jar {{ install_jenkins_agent_home }}/agent.jar \
+    -agentLog {{ install_jenkins_agent_log_path }}/agent.log
     -url "{{ install_jenkins_agent_master_remote }}/" \
     -secret "{{ install_jenkins_agent_secret }}" \
-    -name "{{ install_jenkins_agent_name }}" \
-    -workDir "{{ install_jenkins_agent_home }}" \
-    > {{ install_jenkins_agent_log_path }}/agent.log 2>&1
+    -workDir "{{ install_jenkins_agent_home }}"
+{% if install_jenkins_agent_ca | default(false) %}
+    -cert {{ install_jenkins_agent_ca }} \
+{% endif %}
+    -noCertificateCheck {{ not (install_jenkins_agent_https_check | default(false)) }} \
+{% if install_jenkins_agent_basic_auth | default(false) %}
+    -credentials {{ install_jenkins_agent_basic_auth }} \
+{% endif %}
+    -name "{{ install_jenkins_agent_name }}"
 
 [Install]
 WantedBy=multi-user.target

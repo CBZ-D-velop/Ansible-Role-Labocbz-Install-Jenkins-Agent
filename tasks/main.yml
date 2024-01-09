@@ -4,13 +4,30 @@
     - "Enable and start Jenkins Agent"
     - "Restart Jenkins Agent"
   block:
-    - name: "Edit / Create the Jenkins user"
+    - name: "Edit / Create the Jenkins group"
+      ansible.builtin.group:
+        name: "{{ install_jenkins_agent_group }}"
+        state: present
+        gid: 1000
+
+    - name: "Edit / Create the Jenkins user, Docker based"
+      when: install_jenkins_agent_docker_based | default(false)
       ansible.builtin.user:
         name: "{{ install_jenkins_agent_user }}"
         groups: "docker,{{ install_jenkins_agent_group }}"
         state: present
         append: true
-        password: ""
+        password: "{{ install_jenkins_agent_password }}"
+        uid: 1000
+
+    - name: "Edit / Create the Jenkins user, no Docker based"
+      when: not (install_jenkins_agent_docker_based | default(false))
+      ansible.builtin.user:
+        name: "{{ install_jenkins_agent_user }}"
+        groups: "{{ install_jenkins_agent_group }}"
+        state: present
+        append: true
+        password: "{{ install_jenkins_agent_password }}"
         uid: 1000
 
     - name: "Check if folder home exist"

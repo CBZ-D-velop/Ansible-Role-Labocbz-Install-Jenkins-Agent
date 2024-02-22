@@ -1,17 +1,16 @@
 ---
-install_jenkins_agent_user: "jenkins"
-install_jenkins_agent_group: "jenkins"
-install_jenkins_agent_password: "PASSWORDDDDD"
-install_jenkins_agent_name: "Jenkins-Agent-1"
-install_jenkins_agent_home: "/home/{{ install_jenkins_agent_user }}/{{ install_jenkins_agent_name | lower }}"
-install_jenkins_agent_master_remote: "https://jenkins.domain.tld"
-install_jenkins_agent_jar: "{{ install_jenkins_agent_master_remote }}/jnlpJars/agent.jar"
-install_jenkins_agent_secret: "XXXXXXXX"
-install_jenkins_agent_log_path: "/var/log/jenkins-agent/{{ install_jenkins_agent_name }}"
+install_jenkins__agent_user: "jenkins"
+install_jenkins__agent_group: "jenkins"
+install_jenkins__agent_password: "PASSWORDDDDD"
+install_jenkins__agent_name: "jenkins-agent-1"
+install_jenkins__agent_home: "/home/{{ install_jenkins__agent_user }}/{{ install_jenkins__agent_name | lower }}"
+install_jenkins__agent_master_remote: "https://jenkins.domain.tld"
+install_jenkins__agent_jar: "{{ install_jenkins__agent_master_remote }}/jnlpJars/agent.jar"
+install_jenkins__agent_secret: "XXXXXXXX"
+install_jenkins__agent_log_path: "/var/log/jenkins-agent/{{ install_jenkins__agent_name }}"
 
-install_jenkins_agent_docker_based: true
-install_jenkins_agent_ca: "{{ install_jenkins_agent_home }}/ssl/myCa.pem"
-install_jenkins_agent_https_check: false
-install_jenkins_agent_basic_auth_login: "myuser"
-install_jenkins_agent_basic_auth_password: "password"
-install_jenkins_agent_basic_auth: "{{ install_jenkins_agent_basic_auth_login }}:{{ install_jenkins_agent_basic_auth_password }}"
+install_jenkins__agent_docker_based: true
+install_jenkins__agent_ca: "{{ install_jenkins__agent_home }}/ssl/myCa.pem"
+install_jenkins__agent_basic_auth_login: "myuser"
+install_jenkins__agent_basic_auth_password: "password"
+install_jenkins__agent_basic_auth: "{{ install_jenkins__agent_basic_auth_login }}:{{ install_jenkins__agent_basic_auth_password }}"

@@ -1,0 +1,25 @@
+##############################
+#                            #
+# Ansible / Tower managed on #
+#                            #
+##############################
+
+#!/bin/bash
+
+cd {{ install_jenkins__agent_home }}
+curl -sO {{ install_jenkins__agent_jar }}
+
+java -jar ./agent.jar \
+-agentLog "{{ install_jenkins__agent_log_path }}/agent.log" \
+-url "{{ install_jenkins__agent_master_remote }}" \
+-secret "{{ install_jenkins__agent_secret }}" \
+-workDir "{{ install_jenkins__agent_home }}" \
+{% if install_jenkins__agent_ca | default(false) %}
+-cert {{ install_jenkins__agent_ca }} \
+{% endif %}
+{% if install_jenkins__agent_basic_auth | default(false) %}
+-credentials {{ install_jenkins__agent_basic_auth }} \
+{% endif %}
+-name "{{ install_jenkins__agent_name }}"
+
+exit 0

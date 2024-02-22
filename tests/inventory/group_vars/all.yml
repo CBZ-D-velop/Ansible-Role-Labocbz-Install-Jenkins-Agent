@@ -1,0 +1,22 @@
+---
+inv_prepare_host__system_users:
+  - login: "jenkins"
+    group: "jenkins"
+  - login: "jenkins"
+    group: "docker"
+
+inv_install_jenkins__agent_user: "jenkins"
+inv_install_jenkins__agent_group: "jenkins"
+inv_install_jenkins__agent_password: "PASSWORDDDDD"
+inv_install_jenkins__agent_name: "jenkins-agent-1"
+inv_install_jenkins__agent_home: "/home/{{ inv_install_jenkins__agent_user }}/{{ inv_install_jenkins__agent_name | lower }}"
+inv_install_jenkins__agent_master_remote: "https://jenkins.domain.tld"
+inv_install_jenkins__agent_jar: "{{ inv_install_jenkins__agent_master_remote }}/jnlpJars/agent.jar"
+inv_install_jenkins__agent_secret: "XXXXXXXX"
+inv_install_jenkins__agent_log_path: "/var/log/jenkins-agent/{{ inv_install_jenkins__agent_name }}"
+
+inv_install_jenkins__agent_docker_based: true
+inv_install_jenkins__agent_ca: "{{ inv_install_jenkins__agent_home }}/ssl/myCa.pem"
+inv_install_jenkins__agent_basic_auth_login: "myuser"
+inv_install_jenkins__agent_basic_auth_password: "password"
+inv_install_jenkins__agent_basic_auth: "{{ inv_install_jenkins__agent_basic_auth_login }}:{{ inv_install_jenkins__agent_basic_auth_password }}"

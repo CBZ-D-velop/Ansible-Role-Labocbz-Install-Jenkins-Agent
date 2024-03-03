@@ -1,4 +1,4 @@
-# Ansible role: labocbz.install_jenkins__agent
+# Ansible role: labocbz.install_jenkins_agent__
 
 ![Licence Status](https://img.shields.io/badge/licence-MIT-brightgreen)
 ![CI Status](https://img.shields.io/badge/CI-success-brightgreen)
@@ -107,21 +107,21 @@ Some vars a required to run this role:
 
 ```YAML
 ---
-install_jenkins__agent_user: "jenkins"
-install_jenkins__agent_group: "jenkins"
-install_jenkins__agent_password: "PASSWORDDDDD"
-install_jenkins__agent_name: "jenkins-agent-1"
-install_jenkins__agent_home: "/home/{{ install_jenkins__agent_user }}/{{ install_jenkins__agent_name | lower }}"
-install_jenkins__agent_master_remote: "https://jenkins.domain.tld"
-install_jenkins__agent_jar: "{{ install_jenkins__agent_master_remote }}/jnlpJars/agent.jar"
-install_jenkins__agent_secret: "XXXXXXXX"
-install_jenkins__agent_log_path: "/var/log/jenkins-agent/{{ install_jenkins__agent_name }}"
+install_jenkins_agent___user: "jenkins"
+install_jenkins_agent___group: "jenkins"
+install_jenkins_agent___password: "PASSWORDDDDD"
+install_jenkins_agent___name: "jenkins-agent-1"
+install_jenkins_agent___home: "/home/{{ install_jenkins_agent___user }}/{{ install_jenkins_agent___name | lower }}"
+install_jenkins_agent___master_remote: "https://jenkins.domain.tld"
+install_jenkins_agent___jar: "{{ install_jenkins_agent___master_remote }}/jnlpJars/agent.jar"
+install_jenkins_agent___secret: "XXXXXXXX"
+install_jenkins_agent___log_path: "/var/log/jenkins-agent/{{ install_jenkins_agent___name }}"
 
-install_jenkins__agent_docker_based: true
-install_jenkins__agent_ca: "{{ install_jenkins__agent_home }}/ssl/myCa.pem"
-install_jenkins__agent_basic_auth_login: "myuser"
-install_jenkins__agent_basic_auth_password: "password"
-install_jenkins__agent_basic_auth: "{{ install_jenkins__agent_basic_auth_login }}:{{ install_jenkins__agent_basic_auth_password }}"
+install_jenkins_agent___docker_based: true
+install_jenkins_agent___ca: "{{ install_jenkins_agent___home }}/ssl/myCa.pem"
+install_jenkins_agent___basic_auth_login: "myuser"
+install_jenkins_agent___basic_auth_password: "password"
+install_jenkins_agent___basic_auth: "{{ install_jenkins_agent___basic_auth_login }}:{{ install_jenkins_agent___basic_auth_password }}"
 
 ```
 
@@ -134,21 +134,21 @@ In order to surchage vars, you have multiples possibilities but for mains cases 
 ```YAML
 # From inventory
 ---
-inv_install_jenkins__agent_user: "jenkins"
-inv_install_jenkins__agent_group: "jenkins"
-inv_install_jenkins__agent_password: "PASSWORDDDDD"
-inv_install_jenkins__agent_name: "jenkins-agent-1"
-inv_install_jenkins__agent_home: "/home/{{ inv_install_jenkins__agent_user }}/{{ inv_install_jenkins__agent_name | lower }}"
-inv_install_jenkins__agent_master_remote: "https://jenkins.domain.tld"
-inv_install_jenkins__agent_jar: "{{ inv_install_jenkins__agent_master_remote }}/jnlpJars/agent.jar"
-inv_install_jenkins__agent_secret: "XXXXXXXX"
-inv_install_jenkins__agent_log_path: "/var/log/jenkins-agent/{{ inv_install_jenkins__agent_name }}"
+inv_install_jenkins_agent___user: "jenkins"
+inv_install_jenkins_agent___group: "jenkins"
+inv_install_jenkins_agent___password: "PASSWORDDDDD"
+inv_install_jenkins_agent___name: "jenkins-agent-1"
+inv_install_jenkins_agent___home: "/home/{{ inv_install_jenkins_agent___user }}/{{ inv_install_jenkins_agent___name | lower }}"
+inv_install_jenkins_agent___master_remote: "https://jenkins.domain.tld"
+inv_install_jenkins_agent___jar: "{{ inv_install_jenkins_agent___master_remote }}/jnlpJars/agent.jar"
+inv_install_jenkins_agent___secret: "XXXXXXXX"
+inv_install_jenkins_agent___log_path: "/var/log/jenkins-agent/{{ inv_install_jenkins_agent___name }}"
 
-inv_install_jenkins__agent_docker_based: true
-inv_install_jenkins__agent_ca: "{{ inv_install_jenkins__agent_home }}/ssl/myCa.pem"
-inv_install_jenkins__agent_basic_auth_login: "myuser"
-inv_install_jenkins__agent_basic_auth_password: "password"
-inv_install_jenkins__agent_basic_auth: "{{ inv_install_jenkins__agent_basic_auth_login }}:{{ inv_install_jenkins__agent_basic_auth_password }}"
+inv_install_jenkins_agent___docker_based: true
+inv_install_jenkins_agent___ca: "{{ inv_install_jenkins_agent___home }}/ssl/myCa.pem"
+inv_install_jenkins_agent___basic_auth_login: "myuser"
+inv_install_jenkins_agent___basic_auth_password: "password"
+inv_install_jenkins_agent___basic_auth: "{{ inv_install_jenkins_agent___basic_auth_login }}:{{ inv_install_jenkins_agent___basic_auth_password }}"
 
 ```
 
@@ -163,25 +163,25 @@ inv_install_jenkins__agent_basic_auth: "{{ inv_install_jenkins__agent_basic_auth
 To run this role, you can copy the molecule/default/converge.yml playbook and add it into your playbook:
 
 ```YAML
-- name: "Include labocbz.install_jenkins__agent"
+- name: "Include labocbz.install_jenkins_agent__"
   tags:
     - "labocbz.install_jenkins_agent"
   vars:
-    install_jenkins__agent_user: "{{ inv_install_jenkins__agent_user }}"
-    install_jenkins__agent_group: "{{ inv_install_jenkins__agent_group }}"
-    install_jenkins__agent_password: "{{ inv_install_jenkins__agent_password }}"
-    install_jenkins__agent_docker_based: "{{ inv_install_jenkins__agent_docker_based }}"
-    install_jenkins__agent_name: "{{ inv_install_jenkins__agent_name }}"
-    install_jenkins__agent_home: "{{ inv_install_jenkins__agent_home }}"
-    install_jenkins__agent_master_remote: "{{ inv_install_jenkins__agent_master_remote }}"
-    install_jenkins__agent_jar: "{{ inv_install_jenkins__agent_jar }}"
-    install_jenkins__agent_secret: "{{ inv_install_jenkins__agent_secret }}"
-    install_jenkins__agent_log_path: "{{ inv_install_jenkins__agent_log_path }}"
-    install_jenkins__agent_ca: "{{ inv_install_jenkins__agent_ca }}"
-    install_jenkins__agent_https_check: "{{ inv_install_jenkins__agent_https_check }}"
-    install_jenkins__agent_basic_auth_login: "{{ inv_install_jenkins__agent_basic_auth_login }}"
-    install_jenkins__agent_basic_auth_password: "{{ inv_install_jenkins__agent_basic_auth_password }}"
-    install_jenkins__agent_basic_auth: "{{ inv_install_jenkins__agent_basic_auth }}"
+    install_jenkins_agent___user: "{{ inv_install_jenkins_agent___user }}"
+    install_jenkins_agent___group: "{{ inv_install_jenkins_agent___group }}"
+    install_jenkins_agent___password: "{{ inv_install_jenkins_agent___password }}"
+    install_jenkins_agent___docker_based: "{{ inv_install_jenkins_agent___docker_based }}"
+    install_jenkins_agent___name: "{{ inv_install_jenkins_agent___name }}"
+    install_jenkins_agent___home: "{{ inv_install_jenkins_agent___home }}"
+    install_jenkins_agent___master_remote: "{{ inv_install_jenkins_agent___master_remote }}"
+    install_jenkins_agent___jar: "{{ inv_install_jenkins_agent___jar }}"
+    install_jenkins_agent___secret: "{{ inv_install_jenkins_agent___secret }}"
+    install_jenkins_agent___log_path: "{{ inv_install_jenkins_agent___log_path }}"
+    install_jenkins_agent___ca: "{{ inv_install_jenkins_agent___ca }}"
+    install_jenkins_agent___https_check: "{{ inv_install_jenkins_agent___https_check }}"
+    install_jenkins_agent___basic_auth_login: "{{ inv_install_jenkins_agent___basic_auth_login }}"
+    install_jenkins_agent___basic_auth_password: "{{ inv_install_jenkins_agent___basic_auth_password }}"
+    install_jenkins_agent___basic_auth: "{{ inv_install_jenkins_agent___basic_auth }}"
   ansible.builtin.include_role:
     name: "labocbz.install_jenkins_agent"
 ```

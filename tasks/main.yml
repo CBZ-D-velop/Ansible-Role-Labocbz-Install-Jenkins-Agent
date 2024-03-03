@@ -6,56 +6,56 @@
   block:
     - name: "Edit / Create the Jenkins group"
       ansible.builtin.group:
-        name: "{{ install_jenkins__agent_group }}"
+        name: "{{ install_jenkins_agent___group }}"
         state: present
 
     - name: "Edit / Create the Jenkins user, Docker based"
-      when: install_jenkins__agent_docker_based | default(false)
+      when: install_jenkins_agent___docker_based | default(false)
       ansible.builtin.user:
-        name: "{{ install_jenkins__agent_user }}"
-        groups: "docker,{{ install_jenkins__agent_group }}"
+        name: "{{ install_jenkins_agent___user }}"
+        groups: "docker,{{ install_jenkins_agent___group }}"
         state: present
         append: true
-        password: "{{ install_jenkins__agent_password }}"
+        password: "{{ install_jenkins_agent___password }}"
 
     - name: "Edit / Create the Jenkins user, no Docker based"
-      when: not (install_jenkins__agent_docker_based | default(false))
+      when: not (install_jenkins_agent___docker_based | default(false))
       ansible.builtin.user:
-        name: "{{ install_jenkins__agent_user }}"
-        groups: "{{ install_jenkins__agent_group }}"
+        name: "{{ install_jenkins_agent___user }}"
+        groups: "{{ install_jenkins_agent___group }}"
         state: present
         append: true
-        password: "{{ install_jenkins__agent_password }}"
+        password: "{{ install_jenkins_agent___password }}"
 
     - name: "Check if folder home exist"
       register: folder_check
       ansible.builtin.stat:
-        path: "{{ install_jenkins__agent_home }}"
+        path: "{{ install_jenkins_agent___home }}"
 
     - name: "Create home path"
       when: not folder_check.stat.exists
       ansible.builtin.file:
-        path: "{{ install_jenkins__agent_home }}"
+        path: "{{ install_jenkins_agent___home }}"
         state: directory
         recurse: yes
         mode: "0700"
-        group: "{{ install_jenkins__agent_group }}"
-        owner: "{{ install_jenkins__agent_user }}"
+        group: "{{ install_jenkins_agent___group }}"
+        owner: "{{ install_jenkins_agent___user }}"
 
     - name: "Check if log folder exist"
       register: folder_check
       ansible.builtin.stat:
-        path: "{{ install_jenkins__agent_log_path }}"
+        path: "{{ install_jenkins_agent___log_path }}"
 
     - name: "Create home path"
       when: not folder_check.stat.exists
       ansible.builtin.file:
-        path: "{{ install_jenkins__agent_log_path }}"
+        path: "{{ install_jenkins_agent___log_path }}"
         state: directory
         recurse: yes
         mode: "0700"
-        group: "{{ install_jenkins__agent_group }}"
-        owner: "{{ install_jenkins__agent_user }}"
+        group: "{{ install_jenkins_agent___group }}"
+        owner: "{{ install_jenkins_agent___user }}"
 
 - name: "Import Jenkins Agent service file"
   notify: "Enable and start Jenkins Agent"
@@ -71,8 +71,8 @@
   notify: "Enable and start Jenkins Agent"
   ansible.builtin.template:
     src: "templates/jenkins-start-agent.sh.j2"
-    dest: "{{ install_jenkins__agent_home }}/jenkins-start-agent.sh"
+    dest: "{{ install_jenkins_agent___home }}/jenkins-start-agent.sh"
     mode: "0700"
-    group: "{{ install_jenkins__agent_group }}"
-    owner: "{{ install_jenkins__agent_user }}"
+    group: "{{ install_jenkins_agent___group }}"
+    owner: "{{ install_jenkins_agent___user }}"
     lstrip_blocks: yes

@@ -1,15 +1,15 @@
 ---
 - name: "Enable and start Jenkins Agent"
-  register: install_jenkins__agent_service_status
-  changed_when: install_jenkins__agent_service_status.state != "restarted"
+  register: install_jenkins_agent___service_status
+  changed_when: install_jenkins_agent___service_status.state != "restarted"
   ansible.builtin.service:
     name: "jenkins-agent"
     state: "started"
     enabled: yes
 
 - name: "Restart Jenkins Agent"
-  register: install_jenkins__agent_service_status
-  changed_when: install_jenkins__agent_service_status.state != "restarted"
+  register: install_jenkins_agent___service_status
+  changed_when: install_jenkins_agent___service_status.state != "restarted"
   ansible.builtin.service:
     name: "jenkins-agent"
     state: "restarted"

@@ -5,17 +5,17 @@
 ##############################
 
 [Unit]
-Description=Jenkins Agent: {{ install_jenkins_agent___name }}
+Description=Jenkins Agent: {{ install_jenkins_agent__name }}
 Wants=network-online.target
 After=network-online.target
 
 [Service]
-User={{ install_jenkins_agent___user }}
-Group={{ install_jenkins_agent___user }}
+User={{ install_jenkins_agent__user }}
+Group={{ install_jenkins_agent__user }}
 Type=simple
 Restart=always
-WorkingDirectory={{ install_jenkins_agent___home }}
-ExecStart=/bin/bash {{ install_jenkins_agent___home }}/jenkins-start-agent.sh
+WorkingDirectory={{ install_jenkins_agent__home }}
+ExecStart=/bin/bash {{ install_jenkins_agent__home }}/jenkins-start-agent.sh
 
 [Install]
 WantedBy=multi-user.target

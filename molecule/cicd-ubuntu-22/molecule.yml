@@ -9,7 +9,7 @@ driver:
 
 platforms:
   - name: "molecule-cicd-ubuntu-22-instance-1-install-jenkins-agent"
-    image: "${NEXUS_REPOS_DOCKER_REGISTRY}/${DOCKER_IMAGE_UBUNTU_22_ANSIBLE}"
+    image: "${NEXUS_DOCKER_GROUP_REGISTRY}/${DOCKER_IMAGE__ANSIBLETEST_UBUNTU_22}"
     hostname: "molecule-cicd-ubuntu-22-instance-1-install-jenkins-agent"
     privileged: true
     pre_build_image: true

@@ -6,20 +6,20 @@
 
 #!/bin/bash
 
-cd {{ install_jenkins_agent___home }}
-curl -sO {{ install_jenkins_agent___jar }}
+cd {{ install_jenkins_agent__home }}
+curl -sO {{ install_jenkins_agent__jar }}
 
 java -jar ./agent.jar \
--agentLog "{{ install_jenkins_agent___log_path }}/agent.log" \
--url "{{ install_jenkins_agent___master_remote }}" \
--secret "{{ install_jenkins_agent___secret }}" \
--workDir "{{ install_jenkins_agent___home }}" \
-{% if install_jenkins_agent___ca | default(false) %}
--cert {{ install_jenkins_agent___ca }} \
+-agentLog "{{ install_jenkins_agent__log_path }}/agent.log" \
+-url "{{ install_jenkins_agent__master_remote }}" \
+-secret "{{ install_jenkins_agent__secret }}" \
+-workDir "{{ install_jenkins_agent__home }}" \
+{% if install_jenkins_agent__ca | default(false) %}
+-cert {{ install_jenkins_agent__ca }} \
 {% endif %}
-{% if install_jenkins_agent___basic_auth | default(false) %}
--credentials {{ install_jenkins_agent___basic_auth }} \
+{% if install_jenkins_agent__basic_auth | default(false) %}
+-credentials {{ install_jenkins_agent__basic_auth }} \
 {% endif %}
--name "{{ install_jenkins_agent___name }}"
+-name "{{ install_jenkins_agent__name }}"
 
 exit 0

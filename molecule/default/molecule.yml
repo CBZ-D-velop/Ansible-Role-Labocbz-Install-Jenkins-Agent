@@ -9,7 +9,7 @@ driver:
 
 platforms:
   - name: "molecule-local-instance-1-install-jenkins-agent"
-    image: "robincbz/debian-12-ansible:latest"
+    image: "labocbz/ansibletest-debian-12:latest"
     hostname: "molecule-local-instance-1-install-jenkins-agent"
     #published_ports:
     #  - "0.0.0.0:8181:8181/tcp"
